@@ -4,6 +4,10 @@ from django.http import (
 )
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views.generic import (
+    ListView,
+    DetailView
+)
 
 from .models import TodoItem
 
@@ -24,3 +28,10 @@ class ToDoListIndexView(TemplateView):
 #         request, template_name='todo_list/index.html',
 #         context={'todo_items': todo_items}
 #     )
+
+class ToDoListDoneView(ListView):
+    queryset = TodoItem.objects.filter(done=True).all()
+
+
+class ToDoDetailView(DetailView):
+    model = TodoItem
