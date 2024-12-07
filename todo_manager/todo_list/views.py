@@ -3,13 +3,16 @@ from django.http import (
     HttpResponse
 )
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic import (
     ListView,
-    DetailView
+    DetailView,
+    CreateView
 )
 
-from .models import TodoItem
+from .models import ToDoItem
+from .forms import ToDoItemForm
 
 
 class ToDoListIndexView(TemplateView):
@@ -17,7 +20,7 @@ class ToDoListIndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['todo_items'] = TodoItem.objects.all()
+        context['todo_items'] = ToDoItem.objects.all()
         return context
 
 
@@ -30,8 +33,14 @@ class ToDoListIndexView(TemplateView):
 #     )
 
 class ToDoListDoneView(ListView):
-    queryset = TodoItem.objects.filter(done=True).all()
+    queryset = ToDoItem.objects.filter(done=True).all()
 
 
 class ToDoDetailView(DetailView):
-    model = TodoItem
+    model = ToDoItem
+
+
+class ToDoItemCreateView(CreateView):
+    model = ToDoItem
+    # form_class = ToDoItemForm
+    fields = ('title',)
